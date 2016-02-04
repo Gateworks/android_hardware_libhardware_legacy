@@ -241,7 +241,7 @@ static int get_driver_info(char *buf) {
                     continue;
             }
             /* found the wifi interface */
-            property_set("wlan.interface", de->d_name);
+            property_set("wifi.interface", de->d_name);
             snprintf(path, SYSFS_PATH_MAX, "%s/%s/%s", SYSFS_CLASS_NET, de->d_name, SYS_MOD_NAME_DIR);
             if ((cnt = readlink(path, link, SYSFS_PATH_MAX - 1)) < 0) {
                 ALOGW("can not find link of %s", path);
@@ -273,7 +273,7 @@ int is_wifi_driver_loaded() {
     if (!cnt) {
         if (get_driver_info(modname))
             cnt = strlen(modname);
-        else if (property_get("wlan.interface", line, NULL))
+        else if (property_get("wifi.interface", line, NULL))
             return 1; // found an interface without modname, assume built-in
         else
             goto unloaded;
@@ -554,7 +554,7 @@ int wifi_start_supplicant(int p2p_supported)
         serial = __system_property_serial(pi);
     }
 #endif
-    property_get("wlan.interface", primary_iface, WIFI_TEST_INTERFACE);
+    property_get("wifi.interface", primary_iface, WIFI_TEST_INTERFACE);
 
     property_set("ctl.start", supplicant_name);
     sched_yield();
